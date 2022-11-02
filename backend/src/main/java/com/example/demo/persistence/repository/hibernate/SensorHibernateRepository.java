@@ -1,9 +1,11 @@
 package com.example.demo.persistence.repository.hibernate;
 
 import com.example.demo.persistence.entity.Sensor;
+import com.example.demo.persistence.exception.EntityConstraintViolationException;
 import com.example.demo.persistence.repository.SensorRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +92,11 @@ public class SensorHibernateRepository implements SensorRepository {
 
     @Override
     public Sensor create(Sensor event) {
-        sessionFactory.getCurrentSession().save(event);
+        try {
+            sessionFactory.getCurrentSession().save(event);
+        }catch (ConstraintViolationException e){
+            throw new EntityConstraintViolationException(Sensor.class.getSimpleName(),event.getId());
+        }
         return event;
     }
 
@@ -99,7 +105,11 @@ public class SensorHibernateRepository implements SensorRepository {
         if(getById(event.getId()) == null){
             return false;
         }
-        sessionFactory.getCurrentSession().merge(event);
+        try {
+            sessionFactory.getCurrentSession().merge(event);
+        }catch (ConstraintViolationException e){
+            throw new EntityConstraintViolationException(Sensor.class.getSimpleName(),event.getId());
+        }
         return true;
     }
 
