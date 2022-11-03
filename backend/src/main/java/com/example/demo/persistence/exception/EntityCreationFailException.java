@@ -1,10 +1,10 @@
 package com.example.demo.persistence.exception;
 
-public class EntityConstraintViolationException extends RuntimeException {
+public class EntityCreationFaileException extends RuntimeException {
     private final String ClassName;
     private final long entityId;
 
-    public EntityConstraintViolationException(String className, long entityId) {
+    public EntityCreationFaileException(String className, long entityId) {
         super();
         ClassName = className;
         this.entityId = entityId;
