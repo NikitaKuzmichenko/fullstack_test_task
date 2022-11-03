@@ -1,7 +1,7 @@
 package com.example.demo.persistence.repository.hibernate;
 
 import com.example.demo.persistence.entity.Sensor;
-import com.example.demo.persistence.exception.EntityConstraintViolationException;
+import com.example.demo.persistence.exception.EntityCreationFailException;
 import com.example.demo.persistence.repository.SensorRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,8 +33,6 @@ public class SensorHibernateRepository implements SensorRepository {
 
     private static final String COUNT_ALL_WITH_FILTER = "SELECT COUNT(*) FROM Sensor sensor " + ALL_FLUIDS_TEXT_FILTER;
     private static final String GET_ALL_WITH_FILTER = "SELECT sensor FROM Sensor sensor " + ALL_FLUIDS_TEXT_FILTER;
-
-
 
     private final SessionFactory sessionFactory;
 
@@ -95,7 +93,7 @@ public class SensorHibernateRepository implements SensorRepository {
         try {
             sessionFactory.getCurrentSession().save(event);
         }catch (ConstraintViolationException e){
-            throw new EntityConstraintViolationException(Sensor.class.getSimpleName(),event.getId());
+            throw new EntityCreationFailException(Sensor.class.getSimpleName(),event.getId());
         }
         return event;
     }
@@ -108,7 +106,7 @@ public class SensorHibernateRepository implements SensorRepository {
         try {
             sessionFactory.getCurrentSession().merge(event);
         }catch (ConstraintViolationException e){
-            throw new EntityConstraintViolationException(Sensor.class.getSimpleName(),event.getId());
+            throw new EntityCreationFailException(Sensor.class.getSimpleName(),event.getId());
         }
         return true;
     }
