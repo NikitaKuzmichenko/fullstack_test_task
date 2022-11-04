@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/v1/measurementsUnits",produces = MediaType.APPLICATION_JSON_VALUE)
-public class MeasurementsUnitServiceController {
+public class MeasurementsUnitController {
 
     @Autowired
     private final MeasurementsUnitService service;
 
-    public MeasurementsUnitServiceController(MeasurementsUnitService service) {
+    public MeasurementsUnitController(MeasurementsUnitService service) {
         this.service = service;
     }
 

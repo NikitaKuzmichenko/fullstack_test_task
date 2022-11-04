@@ -13,7 +13,6 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-@Transactional
 public class SensorTypeHibernateRepository implements SensorTypeRepository {
 
     private final SessionFactory sessionFactory;

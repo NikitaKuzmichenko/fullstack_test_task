@@ -10,16 +10,15 @@ import javax.validation.Valid;
 @Service
 @Validated
 public interface SensorService {
-
     Page<SensorDto> getAll(long limit, long offset, String filter);
 
     Page<SensorDto> getAll(long limit, long offset);
 
     SensorDto getById(long id);
 
-    SensorDto create(@Valid SensorDto event);
+    SensorDto create(@Valid SensorDto sensor);
 
-    void update(@Valid SensorDto event);
+    void update(@Valid SensorDto sensor);
 
     void delete(long id);
 

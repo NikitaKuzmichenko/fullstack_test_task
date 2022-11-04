@@ -1,6 +1,5 @@
 package com.example.demo.presentation.exception.handler;
 
-import com.example.demo.persistence.exception.EntityCreationFailException;
 import com.example.demo.presentation.exception.entity.ExceptionWrapper;
 import com.example.demo.service.exception.EntityNotExistException;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,6 @@ public class GlobalExceptionHandler {
     private static final String NOT_FOUND_ERROR_MSG_TEMPLATE = "%s entity with id = %d not found";
     private static final String ENDPOINT_HANDLER_NOT_FOUND_ERROR_MSG_TEMPLATE = "Handler for %s url not found";
     private static final String CONSTRAIN_VALIDATED_ERROR_MSG = "Entity constrains violated";
-    private static final String ENTITY_CREATION_ERROR_MSG = "Operation with %s entity failed";
 
     @ExceptionHandler(EntityNotExistException.class)
     @ResponseBody
@@ -57,15 +55,4 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(EntityCreationFailException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ResponseEntity<ExceptionWrapper> notValidEntityExceptionHandler(EntityCreationFailException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                body(new ExceptionWrapper(
-                        String.format(ENTITY_CREATION_ERROR_MSG,e.getClassName()),
-                        HttpStatus.BAD_REQUEST.value(),
-                        ZonedDateTime.now())
-                );
-    }
 }

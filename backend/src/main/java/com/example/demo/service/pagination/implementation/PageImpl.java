@@ -8,27 +8,31 @@ import java.util.List;
 @Data
 public class PageImpl<E> implements Page<E> {
     private List<E> content;
-    private long pageStart;
+    private long pageOffset;
     private long pageSize;
     private long totalEntitiesAmount;
 
     public PageImpl(List<E> content, long pageStart,long totalEntitiesAmount){
         this.content = content;
         if(content != null){
-            this.pageStart = content.size();
+            this.pageSize = content.size();
         }
-        this.pageSize = pageStart;
+        this.pageOffset = pageStart;
         this.totalEntitiesAmount = totalEntitiesAmount;
     }
 
+    @Override
+    public List<E> getContent(){
+        return content;
+    }
 
     @Override
-    public long getTotalElementsAmount() {
+    public long getTotalEntitiesAmount() {
         return totalEntitiesAmount;
     }
 
     @Override
-    public long getAmountElementsInPage() {
+    public long getPageSize() {
         return pageSize;
     }
 

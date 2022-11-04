@@ -2,7 +2,9 @@ package com.example.demo.service.impementation;
 
 import com.example.demo.persistence.entity.Sensor;
 import com.example.demo.persistence.repository.SensorRepository;
+import com.example.demo.service.MeasurementsUnitService;
 import com.example.demo.service.SensorService;
+import com.example.demo.service.SensorTypeService;
 import com.example.demo.service.dto.SensorDto;
 import com.example.demo.service.dto.convertor.SensorDtoConvertor;
 import com.example.demo.service.exception.EntityNotExistException;
@@ -26,8 +28,18 @@ public class SensorServiceImpl implements SensorService {
     @Autowired
     private final SensorRepository repository;
 
-    public SensorServiceImpl(SensorRepository repository) {
+    @Autowired
+    private final MeasurementsUnitService measurementsUnitService;
+
+    @Autowired
+    private final SensorTypeService sensorTypeService;
+
+    public SensorServiceImpl(SensorRepository repository,
+                             MeasurementsUnitService measurementsUnitService,
+                             SensorTypeService sensorTypeService) {
         this.repository = repository;
+        this.measurementsUnitService = measurementsUnitService;
+        this.sensorTypeService = sensorTypeService;
     }
 
     @Override
@@ -36,8 +48,8 @@ public class SensorServiceImpl implements SensorService {
             return getAll(limit,offset);
         }
 
-        long resultLimit = limit < 0 ? DEFAULT_LIMIT : limit;
-        long resultOffset = offset < 0 ? DEFAULT_OFFSET : offset;
+        long resultLimit = limit <= 0 ? DEFAULT_LIMIT : limit;
+        long resultOffset = offset <= 0 ? DEFAULT_OFFSET : offset;
 
         List<SensorDto> result = repository.getAll(resultLimit, resultOffset, filter).stream().
                 map(SensorDtoConvertor::toDto).
@@ -48,8 +60,8 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public Page<SensorDto> getAll(long limit, long offset) {
-        long resultLimit = limit < 0 ? DEFAULT_LIMIT : limit;
-        long resultOffset = offset < 0 ? DEFAULT_OFFSET : offset;
+        long resultLimit = limit <= 0 ? DEFAULT_LIMIT : limit;
+        long resultOffset = offset <= 0 ? DEFAULT_OFFSET : offset;
 
         List<SensorDto> result = repository.getAll(resultLimit, resultOffset).stream().
                 map(SensorDtoConvertor::toDto).
@@ -68,14 +80,18 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public SensorDto create(@Valid SensorDto event) {
-        return SensorDtoConvertor.toDto(repository.create(SensorDtoConvertor.fromDto(event)));
+    public SensorDto create(@Valid SensorDto sensor) {
+        setRelatedEntities(sensor);
+
+        return SensorDtoConvertor.toDto(repository.create(SensorDtoConvertor.fromDto(sensor)));
     }
 
     @Override
-    public void update(@Valid SensorDto event) {
-        if(!repository.update(SensorDtoConvertor.fromDto(event))){
-            throw new EntityNotExistException(event.getId(), Sensor.class.getSimpleName());
+    public void update(@Valid SensorDto sensor) {
+        setRelatedEntities(sensor);
+
+        if(!repository.update(SensorDtoConvertor.fromDto(sensor))){
+            throw new EntityNotExistException(sensor.getId(), Sensor.class.getSimpleName());
         }
     }
 
@@ -102,6 +118,11 @@ public class SensorServiceImpl implements SensorService {
             return countEntities();
         }
         return repository.countAll(filter);
+    }
+
+    private void setRelatedEntities(SensorDto sensor){
+        sensor.setMeasurementsUnit(measurementsUnitService.getById(sensor.getMeasurementsUnit().getId()));
+        sensor.setType(sensorTypeService.getById(sensor.getType().getId()));
     }
 
 }

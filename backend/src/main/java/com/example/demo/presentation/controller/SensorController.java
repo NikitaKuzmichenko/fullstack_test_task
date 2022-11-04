@@ -21,11 +21,14 @@ public class SensorController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<SensorDto>> getAllSensors(@RequestParam(required = false) long offset,
-                                                        @RequestParam(required = false) long limit,
+    public ResponseEntity<Page<SensorDto>> getAllSensors(@RequestParam(required = false) Long offset,
+                                                        @RequestParam(required = false) Long limit,
                                                         @RequestParam(required = false) String fieldFilter) {
         return ResponseEntity.status(HttpStatus.OK).
-                body(service.getAll(limit, offset,fieldFilter));
+                body(service.getAll(
+                        limit == null ? 0 : limit,
+                        offset == null ? 0 : offset,
+                        fieldFilter));
     }
 
     @GetMapping(value = "{id}")

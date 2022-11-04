@@ -5,11 +5,13 @@ import com.example.demo.persistence.repository.MeasurementsUnitRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@Repository
 public class MeasurementsUnitHibernateRepository implements MeasurementsUnitRepository {
 
     private final SessionFactory sessionFactory;
