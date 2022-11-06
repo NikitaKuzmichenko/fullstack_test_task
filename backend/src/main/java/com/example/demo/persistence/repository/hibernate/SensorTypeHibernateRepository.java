@@ -41,17 +41,17 @@ public class SensorTypeHibernateRepository implements SensorTypeRepository {
     }
 
     @Override
-    public SensorType create(SensorType event) {
-        sessionFactory.getCurrentSession().save(event);
-        return event;
+    public SensorType create(SensorType type) {
+        sessionFactory.getCurrentSession().save(type);
+        return type;
     }
 
     @Override
-    public boolean update(SensorType event) {
-        if(getById(event.getId()) == null){
+    public boolean update(SensorType type) {
+        if(getById(type.getId()) == null){
             return false;
         }
-        sessionFactory.getCurrentSession().merge(event);
+        sessionFactory.getCurrentSession().merge(type);
         return true;
     }
 

@@ -1,11 +1,9 @@
 package com.example.demo.persistence.repository;
 
 import com.example.demo.persistence.entity.Sensor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface SensorRepository {
 
     List<Sensor> getAll(long limit, long offset, String allFieldsPredicate);

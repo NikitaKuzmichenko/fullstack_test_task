@@ -12,7 +12,7 @@ public interface RefreshTokenRepository {
 
     RefreshToken getByToken(String token);
 
-    RefreshToken createToken(RefreshToken token);
+    RefreshToken create(RefreshToken token);
 
     boolean updateToken(RefreshToken token);
 }

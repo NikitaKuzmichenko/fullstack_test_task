@@ -14,7 +14,6 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-@Transactional
 public class SensorHibernateRepository implements SensorRepository {
 
     private static final String ALL_FLUIDS_TEXT_FILTER = "left join sensor.type AS type " +

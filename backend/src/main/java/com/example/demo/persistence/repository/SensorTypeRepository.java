@@ -5,16 +5,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface SensorTypeRepository {
 
     List<SensorType> getAll();
 
     SensorType getById(long id);
 
-    SensorType create(SensorType event);
+    SensorType create(SensorType type);
 
-    boolean update(SensorType event);
+    boolean update(SensorType type);
 
     boolean delete(long id);
 }

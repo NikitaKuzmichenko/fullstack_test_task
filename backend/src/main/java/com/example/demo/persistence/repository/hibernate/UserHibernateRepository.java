@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
+
 @Repository
 public class UserHibernateRepository implements UserRepository {
 
@@ -25,9 +27,13 @@ public class UserHibernateRepository implements UserRepository {
 
     @Override
     public User getUserByLogin(String login) {
-        return sessionFactory.getCurrentSession().createQuery(GET_USER_BY_LOGIN,User.class).
-                setParameter(login,login).
-                getSingleResult();
+        try {
+            return sessionFactory.getCurrentSession().createQuery(GET_USER_BY_LOGIN,User.class).
+                    setParameter("login",login).
+                    getSingleResult();
+        }catch (NoResultException ex){
+            return null;
+        }
     }
 
     @Override
