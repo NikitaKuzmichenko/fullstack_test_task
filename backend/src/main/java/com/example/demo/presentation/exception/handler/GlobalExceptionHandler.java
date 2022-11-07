@@ -1,5 +1,8 @@
 package com.example.demo.presentation.exception.handler;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.demo.presentation.exception.RefreshTokenExpiredException;
 import com.example.demo.presentation.exception.wrapper.ExceptionWrapper;
 import com.example.demo.service.exception.EntityNotExistException;
@@ -17,17 +20,21 @@ import java.time.ZonedDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String NOT_FOUND_ERROR_MSG_TEMPLATE = "%s entity with id = %d not found";
-    private static final String ENDPOINT_HANDLER_NOT_FOUND_ERROR_MSG_TEMPLATE = "Handler for %s url not found";
-    private static final String CONSTRAIN_VALIDATED_ERROR_MSG = "Entity constrains violated";
-    private static final String REFRESH_TOKEN_EXPIRED_ERROR_MSG = "Refresh token expired";
+    private static final String NOT_FOUND_EXCEPTION_MSG_TEMPLATE = "%s entity with %s not found";
+    private static final String ENDPOINT_HANDLER_NOT_FOUND_EXCEPTION_MSG_TEMPLATE = "Handler for %s url not found";
+    private static final String CONSTRAIN_VALIDATED_EXCEPTION_MSG = "Entity constrains violated";
+    private static final String REFRESH_TOKEN_EXPIRED_EXCEPTION_MSG = "Refresh token expired";
+    private static final String JWT_TOKEN_EXPIRED_EXCEPTION_MSG = "JWT token expired";
+    private static final String JWT_TOKEN_DECODE_EXCEPTION_MSG = "JWT token can't be decoded";
+    private static final String JWT_TOKEN_SIGNATURE_EXCEPTION_MSG = "JWT token can't be verified";
 
     @ExceptionHandler(EntityNotExistException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ResponseEntity<ExceptionWrapper> entityNotExistsExceptionHandler(EntityNotExistException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).
                 body(new ExceptionWrapper(
-                        String.format(NOT_FOUND_ERROR_MSG_TEMPLATE,e.getClassName(),e.getEntityId()),
+                        String.format(NOT_FOUND_EXCEPTION_MSG_TEMPLATE,e.getClassName(),e.getReason()),
                                 HttpStatus.NOT_FOUND.value(),
                                 ZonedDateTime.now())
                         );
@@ -39,7 +46,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionWrapper> handlerNotFoundExceptionHandler(NoHandlerFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).
                 body(new ExceptionWrapper(
-                        String.format(ENDPOINT_HANDLER_NOT_FOUND_ERROR_MSG_TEMPLATE,e.getRequestURL()),
+                        String.format(ENDPOINT_HANDLER_NOT_FOUND_EXCEPTION_MSG_TEMPLATE,e.getRequestURL()),
                         HttpStatus.NOT_FOUND.value(),
                         ZonedDateTime.now())
                 );
@@ -51,7 +58,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionWrapper> notValidEntityExceptionHandler(ConstraintViolationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                 body(new ExceptionWrapper(
-                        CONSTRAIN_VALIDATED_ERROR_MSG,
+                        CONSTRAIN_VALIDATED_EXCEPTION_MSG,
                         HttpStatus.BAD_REQUEST.value(),
                         ZonedDateTime.now())
                 );
@@ -63,7 +70,43 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionWrapper> notValidEntityExceptionHandler(RefreshTokenExpiredException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                 body(new ExceptionWrapper(
-                        REFRESH_TOKEN_EXPIRED_ERROR_MSG,
+                        REFRESH_TOKEN_EXPIRED_EXCEPTION_MSG,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ZonedDateTime.now())
+                );
+    }
+
+    @ExceptionHandler(JWTDecodeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ExceptionWrapper> notValidTokenExceptionHandler(Exception exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                body(new ExceptionWrapper(
+                        JWT_TOKEN_DECODE_EXCEPTION_MSG,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ZonedDateTime.now())
+                );
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ExceptionWrapper> tokenExpiredExceptionHandler(Exception exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                body(new ExceptionWrapper(
+                        JWT_TOKEN_EXPIRED_EXCEPTION_MSG,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ZonedDateTime.now())
+                );
+    }
+
+    @ExceptionHandler(SignatureVerificationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ExceptionWrapper> invalidTokenSignatureExceptionHandler(Exception exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                body(new ExceptionWrapper(
+                        JWT_TOKEN_SIGNATURE_EXCEPTION_MSG,
                         HttpStatus.BAD_REQUEST.value(),
                         ZonedDateTime.now())
                 );

@@ -47,7 +47,6 @@ public class AuthenticationController {
 	public ResponseEntity<?> refreshToken(
 			@RequestHeader(value = RefreshTokenManager.HEADER_NAME) String refreshToken) {
 
-		System.out.println("trf");
 		RefreshTokenDto token = tokenService.getByToken(refreshToken);
 		if (tokenManager.isTokenExpired(token)) {
 			throw new RefreshTokenExpiredException();

@@ -37,7 +37,7 @@ public class SensorTypeServiceImpl implements SensorTypeService {
     public SensorTypeDto getById(long id) {
         SensorTypeDto sensorType = SensorTypeDtoConvertor.toDto(repository.getById(id));
         if(sensorType == null){
-            throw new EntityNotExistException(id, SensorType.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id, SensorType.class.getSimpleName());
         }
         return sensorType;
     }

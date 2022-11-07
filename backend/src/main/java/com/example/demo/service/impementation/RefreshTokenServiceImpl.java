@@ -44,7 +44,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         tempToken.setUserId(UserDtoConvertor.fromDto(userService.getById(token.getUserId())));
 
         if(!repository.updateToken(tempToken)){
-            throw new EntityNotExistException(token.getId(), RefreshToken.class.getSimpleName());
+            throw new EntityNotExistException("id = " + token.getId(), RefreshToken.class.getSimpleName());
         }
     }
 
@@ -52,7 +52,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshTokenDto getById(long id) {
         RefreshToken token = repository.getByUserId(id);
         if(token == null){
-            throw new EntityNotExistException(id,RefreshToken.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id,RefreshToken.class.getSimpleName());
         }
         return RefreshTokenDtoConvertor.toDto(token);
     }
@@ -61,7 +61,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshTokenDto getByUserLogin(String login) {
         RefreshToken token = repository.getByUserLogin(login);
         if(token == null){
-            throw new EntityNotExistException(0,RefreshToken.class.getSimpleName());
+            throw new EntityNotExistException("login = " + login,RefreshToken.class.getSimpleName());
         }
         return RefreshTokenDtoConvertor.toDto(token);
     }
@@ -70,7 +70,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshTokenDto getByUserId(long id) {
         RefreshToken token = repository.getByUserId(id);
         if(token == null){
-            throw new EntityNotExistException(0,RefreshToken.class.getSimpleName());
+            throw new EntityNotExistException("user id = " + id,RefreshToken.class.getSimpleName());
         }
         return RefreshTokenDtoConvertor.toDto(token);
     }
@@ -79,7 +79,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshTokenDto getByToken(String strToken) {
         RefreshToken token = repository.getByToken(strToken);
         if(token == null){
-            throw new EntityNotExistException(0,RefreshToken.class.getSimpleName());
+            throw new EntityNotExistException("token = " + strToken,RefreshToken.class.getSimpleName());
         }
         return RefreshTokenDtoConvertor.toDto(token);
     }

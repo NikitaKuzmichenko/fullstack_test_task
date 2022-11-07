@@ -37,7 +37,7 @@ public class MeasurementsUnitServiceImpl implements MeasurementsUnitService {
     public MeasurementsUnitDto getById(long id) {
         MeasurementsUnitDto measurementsUnit = MeasurementsUnitDtoConvertor.toDto(repository.getById(id));
         if(measurementsUnit == null){
-            throw new EntityNotExistException(id, MeasurementsUnit.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id, MeasurementsUnit.class.getSimpleName());
         }
         return measurementsUnit;
     }

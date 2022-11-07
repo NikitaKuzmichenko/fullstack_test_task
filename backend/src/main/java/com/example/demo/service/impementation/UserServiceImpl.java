@@ -30,7 +30,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserRoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
         User tempUser = UserDtoConvertor.fromDto(user);
         UserRole role = roleRepository.getRoleByName(user.getRole());
         if(role == null){
-            throw new EntityNotExistException(0,UserRole.class.getSimpleName());
+            throw new EntityNotExistException("role = " + user.getRole(),UserRole.class.getSimpleName());
         }
         tempUser.setRole(role);
         return UserDtoConvertor.toDto(userRepository.createUser(tempUser));
@@ -52,11 +54,11 @@ public class UserServiceImpl implements UserService {
         User tempUser = UserDtoConvertor.fromDto(user);
         UserRole role = roleRepository.getRoleByName(user.getRole());
         if(role == null){
-            throw new EntityNotExistException(0,UserRole.class.getSimpleName());
+            throw new EntityNotExistException("role = " + user.getRole(),UserRole.class.getSimpleName());
         }
         tempUser.setRole(role);
         if(userRepository.updateUser(tempUser)){
-            throw new EntityNotExistException(user.getId(),User.class.getSimpleName());
+            throw new EntityNotExistException("id = " + user.getId(),User.class.getSimpleName());
         }
     }
 
@@ -70,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getById(long id) {
         User user = userRepository.getById(id);
         if(user == null){
-            throw new EntityNotExistException(id,User.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id,User.class.getSimpleName());
         }
         return UserDtoConvertor.toDto(user);
     }
@@ -79,7 +81,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getByLogin(String login) {
         User user = userRepository.getUserByLogin(login);
         if(user == null){
-            throw new EntityNotExistException(0,User.class.getSimpleName());
+            throw new EntityNotExistException("login = " + login,User.class.getSimpleName());
         }
         return UserDtoConvertor.toDto(user);
     }
@@ -87,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(long id) {
         if(userRepository.deleteUserById(id)){
-            throw new EntityNotExistException(id,User.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id,User.class.getSimpleName());
         }
     }
 }

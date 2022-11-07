@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public class EntityNotExistException extends RuntimeException{
-    private final long entityId;
+    private final String reason;
     private final String className;
 
-    public EntityNotExistException(long entityId, String className) {
+    public EntityNotExistException(String reason, String className) {
         super();
-        this.entityId = entityId;
+        this.reason = reason;
         this.className = className;
     }
 }

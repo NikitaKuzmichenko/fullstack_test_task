@@ -32,7 +32,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 			HttpServletResponse response,
 			AuthenticationException authException)
 			throws IOException, ServletException {
-
 		ExceptionWrapper msg = new ExceptionWrapper(FORBIDDEN_ERROR_MSG,
 				HttpStatus.FORBIDDEN.value(),
 				ZonedDateTime.now());

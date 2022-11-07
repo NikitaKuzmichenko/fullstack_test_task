@@ -74,7 +74,7 @@ public class SensorServiceImpl implements SensorService {
     public SensorDto getById(long id) {
         SensorDto event = SensorDtoConvertor.toDto(repository.getById(id));
         if(event == null){
-            throw new EntityNotExistException(id, Sensor.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id, Sensor.class.getSimpleName());
         }
         return event;
     }
@@ -91,14 +91,14 @@ public class SensorServiceImpl implements SensorService {
         setRelatedEntities(sensor);
 
         if(!repository.update(SensorDtoConvertor.fromDto(sensor))){
-            throw new EntityNotExistException(sensor.getId(), Sensor.class.getSimpleName());
+            throw new EntityNotExistException("id = " + sensor.getId(), Sensor.class.getSimpleName());
         }
     }
 
     @Override
     public void delete(long id) {
         if(!repository.delete(id)){
-            throw new EntityNotExistException(id, Sensor.class.getSimpleName());
+            throw new EntityNotExistException("id = " + id, Sensor.class.getSimpleName());
         }
     }
 
