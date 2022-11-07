@@ -5,61 +5,62 @@ import com.example.demo.presentation.security.filter.jwt.JwtAuthenticationFilter
 import com.example.demo.presentation.security.filter.jwt.JwtTokenVerifier;
 import com.example.demo.presentation.security.token.jwt.JwtTokenManager;
 import com.example.demo.presentation.security.token.refresh.RefreshTokenManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
-
-	@Autowired private FilterChainExceptionHandler filterChainExceptionHandler;
-
-	@Autowired private AccessDeniedHandler handler;
-
-	@Autowired private AuthenticationEntryPoint authenticationEntryPoint;
-
-	@Autowired private JwtTokenManager configuration;
-
-	@Autowired private RefreshTokenManager refreshTokenManager;
-
-	@Autowired private UserDetailsService detailsService;
-
-	@Autowired private PasswordEncoder passwordEncoder;
+public class CustomSecurityConfig{
 
 	@Bean
-	public AuthenticationProvider authenticationProvider() {
+	public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder,
+														 UserDetailsService detailsService) {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setPasswordEncoder(passwordEncoder);
 		provider.setUserDetailsService(detailsService);
 		return provider;
 	}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvider());
+	@Bean
+	public AuthenticationManager authManager(HttpSecurity http,
+											 PasswordEncoder passwordEncoder,
+											 UserDetailsService detailsService) throws Exception {
+
+		return http.getSharedObject(AuthenticationManagerBuilder.class)
+				.userDetailsService(detailsService)
+				.passwordEncoder(passwordEncoder)
+				.and()
+				.build();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic().disable().csrf().disable();
+	@Bean
+	protected SecurityFilterChain filterChain(HttpSecurity http,
+											  AuthenticationManager authenticationManager,
+											  AccessDeniedHandler accessDeniedHandler,
+											  FilterChainExceptionHandler filterChainExceptionHandler,
+											  AuthenticationEntryPoint authenticationEntryPoint,
+											  JwtTokenManager jwtTokenManager,
+											  RefreshTokenManager refreshTokenManager) throws Exception {
+
+		http.csrf().disable();
 
 		http.exceptionHandling()
-				.accessDeniedHandler(handler)
+				.accessDeniedHandler(accessDeniedHandler)
 				.authenticationEntryPoint(authenticationEntryPoint)
 				.and()
 				.sessionManagement()
@@ -68,7 +69,9 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
 				.addFilter(
 						new JwtAuthenticationFilter(
-								authenticationManager(), configuration, refreshTokenManager))
-				.addFilterBefore(new JwtTokenVerifier(configuration), JwtAuthenticationFilter.class);
+								authenticationManager, jwtTokenManager, refreshTokenManager))
+				.addFilterBefore(new JwtTokenVerifier(jwtTokenManager), JwtAuthenticationFilter.class);
+
+		return http.build();
 	}
 }
