@@ -1,33 +1,43 @@
-package com.epam.esm.web.security.filter.jwt;
+package com.example.demo.presentation.security.filter.jwt;
 
-import static com.epam.esm.web.exceptionhandler.ExceptionResponseCreator.unauthorizedResponse;
-
-import com.epam.esm.service.security.entity.CustomUserDetails;
-import com.epam.esm.web.security.entity.AuthenticationEntity;
-import com.epam.esm.web.security.token.jwt.JwtTokenManager;
-import com.epam.esm.web.security.token.refresh.RefreshTokenManager;
+import com.example.demo.presentation.exception.wrapper.ExceptionWrapper;
+import com.example.demo.presentation.security.entity.AuthenticationEntity;
+import com.example.demo.presentation.security.token.jwt.JwtTokenManager;
+import com.example.demo.presentation.security.token.refresh.RefreshTokenManager;
+import com.example.demo.service.security.CustomUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
+
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+	public static final String AUTHENTICATION_ERROR_MSG = "Authentication error";
 
 	private final AuthenticationManager authenticationManager;
 
 	private final JwtTokenManager jwtTokenManager;
 
 	private final RefreshTokenManager refreshTokenManager;
+
+	private final ObjectMapper mapper = JsonMapper.builder()
+			.addModule(new JavaTimeModule())
+			.build();
 
 	public JwtAuthenticationFilter(
 			AuthenticationManager authenticationManager,
@@ -47,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 			Authentication authentication =
 					new UsernamePasswordAuthenticationToken(
-							authenticationRequest.getEmail(), authenticationRequest.getPassword());
+							authenticationRequest.getLogin(), authenticationRequest.getPassword());
 
 			return authenticationManager.authenticate(authentication);
 		} catch (IOException e) {
@@ -76,12 +86,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)
 			throws IOException, ServletException {
 
-		ObjectMapper mapper = new ObjectMapper();
-		ResponseEntity responseEntity = unauthorizedResponse(request.getLocale());
-		response.setStatus(responseEntity.getStatusCodeValue());
+		ExceptionWrapper msg = new ExceptionWrapper(
+				AUTHENTICATION_ERROR_MSG,
+				HttpStatus.UNAUTHORIZED.value(),
+				ZonedDateTime.now());
+
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().print(mapper.writeValueAsString(responseEntity.getBody()));
-		response.flushBuffer();
+		response.getOutputStream().println(mapper.writeValueAsString(msg));
+
+
 	}
 }

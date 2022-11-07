@@ -1,6 +1,7 @@
 package com.example.demo.presentation.exception.handler;
 
-import com.example.demo.presentation.exception.entity.ExceptionWrapper;
+import com.example.demo.presentation.exception.RefreshTokenExpiredException;
+import com.example.demo.presentation.exception.wrapper.ExceptionWrapper;
 import com.example.demo.service.exception.EntityNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class GlobalExceptionHandler {
     private static final String NOT_FOUND_ERROR_MSG_TEMPLATE = "%s entity with id = %d not found";
     private static final String ENDPOINT_HANDLER_NOT_FOUND_ERROR_MSG_TEMPLATE = "Handler for %s url not found";
     private static final String CONSTRAIN_VALIDATED_ERROR_MSG = "Entity constrains violated";
+    private static final String REFRESH_TOKEN_EXPIRED_ERROR_MSG = "Refresh token expired";
 
     @ExceptionHandler(EntityNotExistException.class)
     @ResponseBody
@@ -50,6 +52,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                 body(new ExceptionWrapper(
                         CONSTRAIN_VALIDATED_ERROR_MSG,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ZonedDateTime.now())
+                );
+    }
+
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ExceptionWrapper> notValidEntityExceptionHandler(RefreshTokenExpiredException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                body(new ExceptionWrapper(
+                        REFRESH_TOKEN_EXPIRED_ERROR_MSG,
                         HttpStatus.BAD_REQUEST.value(),
                         ZonedDateTime.now())
                 );

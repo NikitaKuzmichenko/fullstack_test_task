@@ -1,10 +1,10 @@
-package com.epam.esm.web.security;
+package com.example.demo.presentation.security;
 
-import com.epam.esm.web.security.filter.exceprion.FilterChainExceptionHandler;
-import com.epam.esm.web.security.filter.jwt.JwtAuthenticationFilter;
-import com.epam.esm.web.security.filter.jwt.JwtTokenVerifier;
-import com.epam.esm.web.security.token.jwt.JwtTokenManager;
-import com.epam.esm.web.security.token.refresh.RefreshTokenManager;
+import com.example.demo.presentation.security.filter.exceprion.FilterChainExceptionHandler;
+import com.example.demo.presentation.security.filter.jwt.JwtAuthenticationFilter;
+import com.example.demo.presentation.security.filter.jwt.JwtTokenVerifier;
+import com.example.demo.presentation.security.token.jwt.JwtTokenManager;
+import com.example.demo.presentation.security.token.refresh.RefreshTokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,15 +57,6 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.httpBasic().disable().csrf().disable();
-
-		http.authorizeRequests()
-				.antMatchers(
-						"/swagger-ui/**",
-						"/v2/api-docs/**",
-						"/configuration/security",
-						"/webjar/**",
-						"/swagger-resources/**")
-				.permitAll();
 
 		http.exceptionHandling()
 				.accessDeniedHandler(handler)

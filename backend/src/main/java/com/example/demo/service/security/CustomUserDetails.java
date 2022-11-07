@@ -1,10 +1,10 @@
-package com.epam.esm.service.security.entity;
+package com.example.demo.service.security;
 
-import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-// @EqualsAndHashCode
+import java.util.Collection;
+
 public class CustomUserDetails extends User {
 
 	private long userId;

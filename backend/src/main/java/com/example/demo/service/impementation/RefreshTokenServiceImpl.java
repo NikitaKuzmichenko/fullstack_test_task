@@ -10,11 +10,13 @@ import com.example.demo.service.dto.convertor.UserDtoConvertor;
 import com.example.demo.service.exception.EntityNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 
 @Service
+@Transactional
 @Validated
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
@@ -34,7 +36,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         tempToken.setUserId(UserDtoConvertor.fromDto(userService.getById(token.getUserId())));
 
         return RefreshTokenDtoConvertor.toDto(repository.create(tempToken));
-
     }
 
     @Override

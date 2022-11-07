@@ -1,10 +1,11 @@
-package com.epam.esm.web.security.entity;
+package com.example.demo.presentation.security.entity;
+
+import lombok.Data;
 
 import java.io.Serializable;
-import lombok.Data;
 
 @Data
 public class AuthenticationEntity implements Serializable {
-	private String email;
+	private String login;
 	private String password;
 }

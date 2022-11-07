@@ -19,10 +19,16 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	implementation 'com.auth0:java-jwt:3.18.3'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
+
+
 	implementation 'org.postgresql:postgresql:42.3.3'
 	implementation 'org.hibernate:hibernate-core:5.6.12.Final'
-	implementation 'org.springframework:spring-orm:5.3.23'
 	implementation 'org.hibernate:hibernate-envers:5.6.12.Final'
+	implementation 'org.springframework:spring-orm:5.3.23'
 
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
@@ -31,7 +37,6 @@ dependencies {
 
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
-
 }
 
 tasks.named('test') {

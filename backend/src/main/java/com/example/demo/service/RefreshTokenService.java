@@ -14,7 +14,7 @@ public interface RefreshTokenService {
 
     RefreshTokenDto getById(long id);
 
-    RefreshTokenDto getByUserLogin(String email);
+    RefreshTokenDto getByUserLogin(String login);
 
     RefreshTokenDto getByUserId(long id);
 

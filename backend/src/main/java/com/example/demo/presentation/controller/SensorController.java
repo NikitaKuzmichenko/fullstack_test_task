@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class SensorController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('Administrator') or hasAuthority('Viewer')")
     public ResponseEntity<Page<SensorDto>> getAllSensors(@RequestParam(required = false) Long offset,
                                                         @RequestParam(required = false) Long limit,
                                                         @RequestParam(required = false) String fieldFilter) {
@@ -32,18 +34,21 @@ public class SensorController {
     }
 
     @GetMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('Administrator')")
     public ResponseEntity<SensorDto> getSensorById(@PathVariable("id") long id) {
         return ResponseEntity.status(HttpStatus.OK).
                 body(service.getById(id));
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('Administrator')")
     public ResponseEntity<SensorDto> createNewSensor(@RequestBody SensorDto event) {
         return ResponseEntity.status(HttpStatus.CREATED).
                 body(service.create(event));
     }
 
     @PutMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('Administrator')")
     public ResponseEntity<?> putSensor(@PathVariable("id") long id, @RequestBody SensorDto event) {
         if(service.contains(id)){
             event.setId(id);
@@ -60,6 +65,7 @@ public class SensorController {
     }
 
     @DeleteMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('Administrator')")
     public ResponseEntity<?> deleteSensorById(@PathVariable("id") long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).
