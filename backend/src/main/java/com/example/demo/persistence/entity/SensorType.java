@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity(name = "SensorType")
-@Table(name = "SensorType")
+@Table(name = "sensor_type")
 public class SensorType {
 
     @Id
