@@ -1,0 +1,144 @@
+$textColor : rgb(65,65,65);
+$selectorTextFont : Calibri;
+.header{
+    margin: 0;
+    text-align: center;
+    font-size: 36px;
+    margin-right: 200px;
+    margin-top: 30px;
+}
+
+.input-block{
+    display: flex;
+    align-content: center; 
+    flex-wrap: wrap; 
+    flex-direction: column;
+    margin-top: 10px; 
+
+    div{
+        display: flex; 
+        justify-content: flex-end; 
+    }
+
+    .input-field{
+        width: 300px;
+    }
+}
+
+.button-holder{ 
+    button{
+        height: 34px;
+        width: 160px; 
+        margin-top: 10px;
+        margin-left: 101px;
+    }
+}
+
+.input-line-holder{
+    height: 50px;
+}
+
+.requerd-fuild-lable{
+    div p {
+        margin: 0; 
+        padding: 0; 
+        height: 10px;
+        margin-right: 40px;  
+        
+    }
+
+    p{
+        margin: 0; 
+        padding: 0;
+        margin-right: 50px;  
+    }
+}
+
+.requerd-fuild-input{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.range-selector{
+
+    p{
+        margin-top: 12px;
+        padding-right: 8px;
+    }
+
+    .input-field{
+        margin-top: 10px;
+        width: 110px;
+        height: 25px;
+    }
+
+    label{
+        margin-top: 16px;
+        font-size : 14px;
+        margin-right: 6px;
+        margin-left: 5px;
+    }
+
+    .related-buttons-holder{
+        margin-top: 10px;
+        display:flex; 
+        flex-direction: column;
+        justify-content:flex-start;
+        
+        button{
+            height: 16px;
+            width: 24px; 
+            background-image: url("../../../../../assets/arrow_down.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 8px 8px;
+            margin: 0;
+        }
+        
+        .arrow-up{
+            transform: scaleY(-1);
+            border-left: 0px;
+            border-top: 2px solid;
+            border-color: black;
+        }
+
+        .arrow-down{
+            margin-top: -1px;
+            border-top: 0px solid;
+            border-left: 0px;
+        }
+    }
+}
+
+.text-area{
+    height: 150px;
+    resize: none;
+}
+
+.text-area::-webkit-input-placeholder{
+    color: rgb(144,144,144);
+}
+
+.select-input{
+    text-indent: 6px;
+    padding-right: 29px;
+    appearance: none;
+    background-image: url("../../../../../assets/arrow_up_down.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: right;
+    min-width: 308px; 
+
+    font-family: $selectorTextFont;
+
+    option{
+        margin-left: 5px;
+        font-size: 16px;
+        font-family: $selectorTextFont;
+    }
+}
+
+.select-input::placeholder{
+    margin-left: 50px;
+    font-family: $selectorTextFont;
+}

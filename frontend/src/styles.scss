@@ -1,1 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
+$fontFamily : Calibri;
+$textColor : rgb(65,65,65);
+$defaultBorderColor : black;
+
+$defaultButtonBackgroundColor : rgb(217,217,217);
+
+body{
+    background-color: rgb(245,245,245);
+    margin: 0;
+    padding: 0;
+}
+
+.header-text{
+    font-size: 62px;
+    font-family: $fontFamily;
+}
+
+.regular-text{
+    font-size: 19px;
+    color:$textColor;
+    font-family: $fontFamily;
+}
+
+.input-lable{
+    height: 30px; 
+    margin-top: 5px; 
+    margin-right: 20px;
+}
+
+.input-field{
+    border: 0px;
+    width: 190px;
+    line-height: 25px;
+    margin-bottom: 10px;
+    border-color: $defaultBorderColor;
+    border: 2px solid;
+}
+
+.input-field:focus{
+    outline:none;
+}
+
+.input-field::placeholder{
+    padding-left: 5px;
+    color:$textColor;
+    font-family: $fontFamily;
+}
+
+.default-btn-no-effects{
+    border-radius: 5px;
+    border-color: $defaultBorderColor;
+    border: 2px solid;
+    background-color: $defaultButtonBackgroundColor;
+    padding-bottom: 4px;
+    box-shadow:inset 0 -4px 0 0 rgba(0,0,0,.2)
+}
+
+.default-btn{
+    @extend .default-btn-no-effects;
+}
+
+.default-btn:active{
+    padding-bottom: 1px;
+    box-shadow:inset 0 -1px 0 0 rgba(0,0,0,.2)
+}
