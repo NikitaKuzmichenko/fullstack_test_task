@@ -1,4 +1,4 @@
-interface MeasuringUnit{
-    id : Number,
+export interface MeasuringUnit{
+    id : number,
     value : string
 }

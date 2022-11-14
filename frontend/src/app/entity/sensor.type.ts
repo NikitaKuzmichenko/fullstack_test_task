@@ -1,4 +1,4 @@
-interface SensorType{
-    id : Number,
+export interface SensorType{
+    id : number,
     value : string
 }
