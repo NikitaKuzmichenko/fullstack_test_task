@@ -27,9 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
 
         return next.handle(authReq).pipe(
-            catchError(error => {
-                console.log(error);
-                
+            catchError(error => {    
             if (error instanceof HttpErrorResponse && error.status === 401) {
                 return this.handle401Error(authReq , next);
             } else {
@@ -45,7 +43,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     private handle401Error(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpEvent<any>> {
-        console.log("trying refresh token");
         
         if (!this.isRefreshing) {
           this.isRefreshing = true;

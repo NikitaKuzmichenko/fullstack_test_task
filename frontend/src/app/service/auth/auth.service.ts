@@ -4,6 +4,7 @@ import { Observable } from "rxjs/internal/Observable";
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from "rxjs/internal/observable/of";
 import { UserCredentials, UserInfo } from '../../entity/user';
+import { throwError } from "rxjs";
 
 const jsonHeader = new HttpHeaders({
   'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ export class AuthService implements OnInit{
       }),
       map(e=>true),
       catchError(error => {
-        return of(false);
+        return throwError(() => false);
       }));
   }
 
@@ -53,13 +54,11 @@ export class AuthService implements OnInit{
 
     return this.http.post<any>(this.REFRESH_TOKEN_URL,token,{ headers: jsonHeader}).pipe(
       tap(responce => {
-        console.log(responce);
-        
           return this.doLoginUser(responce.jwt, responce.refreshToken);
       }),
       map(e=>true),
       catchError(error => {
-        return of(false);
+        return throwError(() => false);
       }));
   }
 

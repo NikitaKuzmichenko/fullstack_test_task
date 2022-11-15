@@ -7,7 +7,7 @@ export interface Sensor{
     model : string,
     lowerOperationalBound : number,
     higherOperationalBound : number,
-    measuringUnit : MeasuringUnit,
+    measurementsUnit : MeasuringUnit,
     type : SensorType,
     location : string,
     description : string

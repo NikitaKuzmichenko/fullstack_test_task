@@ -17,10 +17,10 @@ export class AdminAccessGuard implements CanActivate{
     boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         let user = this.service.getCurrentUser();
         
-        if(user == null){
+        if(user == null || !this.ACCESSPTED_ROLES.includes(user.role)){
             return this.router.createUrlTree([this.pageNavigator.getPath(Page.LoginPage)]);
         }
 
-        return this.ACCESSPTED_ROLES.includes(user.role);
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/internal/Observable";
-import { MeasuringUnit } from "../entity/sensor.measuring.unit";
+import { ContentPage } from "../entity/page";
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ export class MeasuringUnitServie{
 
     constructor(private http: HttpClient){}
 
-    getAll(): Observable<MeasuringUnit[]> {
-        return this.http.get<MeasuringUnit[]>(this.API_URL);
+    getAll(): Observable<ContentPage> {
+        return this.http.get<ContentPage>(this.API_URL);
     }
 }

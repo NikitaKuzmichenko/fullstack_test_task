@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/internal/Observable";
-import { SensorType } from "../entity/sensor.type";
+import { ContentPage } from "../entity/page";
 
 const jsonHeader = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ export class SensorTypeServie{
 
     constructor(private http: HttpClient){}
 
-    getAll(): Observable<SensorType[]> {
-        return this.http.get<SensorType[]>(this.API_URL,{ headers: jsonHeader});
+    getAll(): Observable<ContentPage> {
+        return this.http.get<ContentPage>(this.API_URL,{ headers: jsonHeader});
     }
 }

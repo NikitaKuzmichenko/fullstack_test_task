@@ -6,10 +6,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/page/login/login/login.component';
 import { SensorTableComponent } from './component/page/sensorTable/sensor-table/sensor-table.component';
-import { SensorEditorComponent } from './component/page/sensorEditor/sensor-editor/sensor-editor.component';
+import { SensorEditorComponent } from './component/page/sesnor/sensor-editor/sensor-editor.component';
 import { AuthInterceptor } from './service/auth/auth.Interceptor';
 import { AdminAccessGuard } from './service/guard/admin.access.guard';
 import { UserAccessGuard } from './service/guard/user.access.guard';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SensorCreatorComponent } from './component/page/sesnor/sensor-creator/sensor-creator.component';
+import { SensorPreviewComponent } from './component/page/sensorTable/sensor-preview/sensor-preview.component';
 
 const appRoutes: Routes =[
   {
@@ -23,11 +26,11 @@ const appRoutes: Routes =[
   },
   {
     path :'sensors/create' ,
-    component : SensorEditorComponent,
+    component : SensorCreatorComponent,
     canActivate: [AdminAccessGuard]
   },
   {
-    path :'sensors/edit' ,
+    path :'sensors/:id/edit' ,
     component : SensorEditorComponent,
     canActivate: [AdminAccessGuard]
   },
@@ -43,12 +46,15 @@ const appRoutes: Routes =[
     AppComponent,
     LoginComponent,
     SensorTableComponent,
-    SensorEditorComponent
+    SensorEditorComponent,
+    SensorCreatorComponent,
+    SensorPreviewComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },UserAccessGuard,AdminAccessGuard],
   bootstrap: [AppComponent]
