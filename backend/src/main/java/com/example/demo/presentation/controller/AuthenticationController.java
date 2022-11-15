@@ -1,6 +1,7 @@
 package com.example.demo.presentation.controller;
 
 import com.example.demo.presentation.exception.RefreshTokenExpiredException;
+import com.example.demo.presentation.security.token.AccessTokens;
 import com.example.demo.presentation.security.token.jwt.JwtTokenManager;
 import com.example.demo.presentation.security.token.refresh.RefreshTokenManager;
 import com.example.demo.service.RefreshTokenService;
@@ -11,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/v1/auth",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,20 +41,16 @@ public class AuthenticationController {
 	}
 
 	@PreAuthorize("permitAll()")
-	@GetMapping(value = "refreshToken", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> refreshToken(
-			@RequestHeader(value = RefreshTokenManager.HEADER_NAME) String refreshToken) {
+	@PostMapping(value = "refreshToken", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AccessTokens> refreshToken(@RequestBody String refreshToken) {
 
 		RefreshTokenDto token = tokenService.getByToken(refreshToken);
 		if (tokenManager.isTokenExpired(token)) {
 			throw new RefreshTokenExpiredException();
 		}
-
-		return ResponseEntity.status(HttpStatus.OK)
-				.header(RefreshTokenManager.HEADER_NAME, tokenManager.refreshToken(refreshToken))
-				.header(
-						JwtTokenManager.HEADER_NAME,
-						jwtTokenManager.createJwt(userService.getById(token.getUserId())))
-				.build();
+		AccessTokens tokens = new AccessTokens();
+		tokens.setJwt(jwtTokenManager.createJwt(userService.getById(token.getUserId())));
+		tokens.setRefreshToken(tokenManager.refreshToken(refreshToken));
+		return ResponseEntity.status(HttpStatus.CREATED).body(tokens);
 	}
 }

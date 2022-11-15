@@ -10,12 +10,12 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -69,7 +69,7 @@ public class JwtTokenManager {
 				.withIssuedAt(new Date())
 				.withJWTId(String.valueOf(user.getId()))
 				.withExpiresAt(getExpirationDate(new Date()))
-				.withClaim(AUTHORITIES_CLAIMS_FIELD_NAME, user.getRole())
+				.withClaim(AUTHORITIES_CLAIMS_FIELD_NAME, List.of(user.getRole()))
 				.sign(encodingAlgorithm);
 	}
 

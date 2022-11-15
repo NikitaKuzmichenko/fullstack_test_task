@@ -86,27 +86,32 @@ public class SensorHibernateRepository implements SensorRepository {
     }
 
     @Override
+    @Transactional
     public Sensor create(Sensor event) {
         sessionFactory.getCurrentSession().save(event);
         return event;
     }
 
     @Override
+    @Transactional
     public boolean update(Sensor event) {
         if(getById(event.getId()) == null){
             return false;
         }
         sessionFactory.getCurrentSession().merge(event);
+        sessionFactory.getCurrentSession().flush();
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         Sensor entity = getById(id);
         if(entity == null){
             return false;
         }
         sessionFactory.getCurrentSession().delete(entity);
+        sessionFactory.getCurrentSession().flush();
         return true;
     }
 

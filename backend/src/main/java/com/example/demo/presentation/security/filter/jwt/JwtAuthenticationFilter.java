@@ -2,6 +2,7 @@ package com.example.demo.presentation.security.filter.jwt;
 
 import com.example.demo.presentation.exception.wrapper.ExceptionWrapper;
 import com.example.demo.presentation.security.entity.AuthenticationEntity;
+import com.example.demo.presentation.security.token.AccessTokens;
 import com.example.demo.presentation.security.token.jwt.JwtTokenManager;
 import com.example.demo.presentation.security.token.refresh.RefreshTokenManager;
 import com.example.demo.service.security.CustomUserDetails;
@@ -74,11 +75,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			throws IOException, ServletException {
 		CustomUserDetails user = (CustomUserDetails) authResult.getPrincipal();
 
-		String jwt = jwtTokenManager.createJwt(user);
-		String refreshToken = refreshTokenManager.generateToken(user.getUserId());
+		AccessTokens tokens = new AccessTokens();
+		tokens.setJwt(jwtTokenManager.createJwt(user));
+		tokens.setRefreshToken(refreshTokenManager.generateToken(user.getUserId()));
 
-		response.setHeader(JwtTokenManager.HEADER_NAME, jwt);
-		response.setHeader(RefreshTokenManager.HEADER_NAME, refreshToken);
+		response.setStatus(HttpStatus.CREATED.value());
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.getOutputStream().println(mapper.writeValueAsString(tokens));
 	}
 
 	@Override
@@ -95,7 +99,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.getOutputStream().println(mapper.writeValueAsString(msg));
-
-
 	}
 }

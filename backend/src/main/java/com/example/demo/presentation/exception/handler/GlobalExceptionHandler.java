@@ -65,49 +65,49 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RefreshTokenExpiredException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ResponseEntity<ExceptionWrapper> notValidEntityExceptionHandler(RefreshTokenExpiredException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
                 body(new ExceptionWrapper(
                         REFRESH_TOKEN_EXPIRED_EXCEPTION_MSG,
-                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.UNAUTHORIZED.value(),
                         ZonedDateTime.now())
                 );
     }
 
     @ExceptionHandler(JWTDecodeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ResponseEntity<ExceptionWrapper> notValidTokenExceptionHandler(Exception exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
                 body(new ExceptionWrapper(
                         JWT_TOKEN_DECODE_EXCEPTION_MSG,
-                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.UNAUTHORIZED.value(),
                         ZonedDateTime.now())
                 );
     }
 
     @ExceptionHandler(TokenExpiredException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ResponseEntity<ExceptionWrapper> tokenExpiredExceptionHandler(Exception exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
                 body(new ExceptionWrapper(
                         JWT_TOKEN_EXPIRED_EXCEPTION_MSG,
-                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.UNAUTHORIZED.value(),
                         ZonedDateTime.now())
                 );
     }
 
     @ExceptionHandler(SignatureVerificationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ResponseEntity<ExceptionWrapper> invalidTokenSignatureExceptionHandler(Exception exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
                 body(new ExceptionWrapper(
                         JWT_TOKEN_SIGNATURE_EXCEPTION_MSG,
-                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.UNAUTHORIZED.value(),
                         ZonedDateTime.now())
                 );
     }

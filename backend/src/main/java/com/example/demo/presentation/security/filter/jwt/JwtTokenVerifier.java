@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 						decodedJWT.
 								getClaim(JwtTokenManager.AUTHORITIES_CLAIMS_FIELD_NAME).
 								asArray(String.class)).
+						filter(Objects::nonNull).
 						map(SimpleGrantedAuthority::new).
 						collect(Collectors.toSet());
 
