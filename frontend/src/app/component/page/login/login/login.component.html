@@ -3,17 +3,21 @@
         <h1 class="header-text">Login Form</h1>
         <p class="regular-text">enter login and password for access</p>
     </div>
-    <form class="input-block">
+    <form class="input-block" [formGroup]="login_form" (ngSubmit)="submitForm()">
         <div>
             <label for="login" class="input-lable regular-text">Login</label>
-            <input required name="login" class="input-field" type="text" placeholder=" Your Login">
+            <input formControlName="login" required name="login" class="input-field" type="text" placeholder=" Your Login">
         </div>
         <div>
             <label for="password" class="input-lable regular-text">Password</label>
-            <input required name="password" class="input-field" type="password" placeholder="Your Password">
+            <input formControlName="password" required name="password" class="input-field" type="password" placeholder="Your Password">
         </div>
         <div>
-            <button class =" default-btn regular-text">Login</button>
+            <button class ="default-btn regular-text">Login</button>
         </div>
     </form>
+    <div *ngIf="errorPresent" class="error-msg regular-text">
+        <p>{{errorMsg}}</p> 
+    </div>
+
 </article>

@@ -1,0 +1,23 @@
+
+<div class="sensor">
+    <button (click)="editSensor()" [disabled]="buttonsDisabled" class ="edit-btn default-btn-no-effects regular-text"></button>
+    <div>
+        <a hred = "#" [attr.popup-hint]="sensor.description" class="regular-text"><h1>{{sensor.name}}</h1></a>
+    </div>
+    <div>
+        <h1 class="regular-text">{{sensor.model}}</h1>
+    </div>
+    <div>
+        <h1 class="regular-text">{{sensor.type.value}}</h1>
+    </div>
+    <div>
+        <h1 class="regular-text">{{range}}</h1>
+    </div>
+    <div>
+        <h1 class="regular-text">{{sensor.measurementsUnit.value}}</h1>
+    </div>
+    <div>
+        <h1 class="regular-text">{{sensor.location}}</h1>
+    </div>
+    <button (click)="deleteSensor()" [disabled]="buttonsDisabled" class ="delete-btn default-btn-no-effects regular-text"></button>
+</div>

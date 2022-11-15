@@ -1,0 +1,95 @@
+<article>
+    <header>
+        <h6 class="regular-text header">Add/Edit</h6> 
+    </header>
+    <form [formGroup]="update_sensor_form" class="input-block" (ngSubmit)="null">
+        <div class="input-line-holder">
+            <label for="Name" class="input-lable regular-text requerd-fuild-lable">
+                <div>
+                    <p>*</p>
+                </div>
+                <p>Name</p>
+            </label>
+            <input formControlName="name" required name="Name" class="input-field requerd-fuild-input " type="text" placeholder="Name">
+        </div>
+        <div class="input-line-holder">
+            <label for="Model" class="input-lable regular-text requerd-fuild-lable">
+                <div>
+                    <p>*</p>
+                </div>
+                <p>Model</p>
+            </label>
+            <input formControlName="model" required name="Model" class="input-field requerd-fuild-input" type="text" placeholder="Model">
+        </div>
+        <div class="range-selector input-line-holder">
+            <p for="login" class="input-lable regular-text">Range</p>
+
+            <label for="login" class="input-lable regular-text">From</label>
+            <input (change)="fromChange($event)" formControlName="rangeFrom" required name="login" class="input-field" type="number" placeholder="Form">
+            <div class="related-buttons-holder">
+                <button (click)="incFrom()" class ="arrow-up regular-text"></button>
+                <button (click)="decFrom()" class ="arrow-down regular-text"></button>
+            </div>
+
+            <label for="login" class="input-lable regular-text">To</label>
+            <input (change)="toChange($event)" formControlName="rangeTo" required name="login" class="input-field" type="number" placeholder="To">
+            <div class="related-buttons-holder">
+                <button (click)="incTo()" class ="arrow-up regular-text"></button>
+                <button (click)="decTo()" class ="arrow-down regular-text"></button>
+            </div>
+        </div>
+        <div class="input-line-holder">
+            <label for="Type" class="input-lable regular-text requerd-fuild-lable">
+                <div>
+                    <p>*</p>
+                </div>
+                <p>Type</p>
+            </label>
+            <select 
+            [selectedIndex]="selectedSensorTypeId" 
+            (change) = "onTypeChange($event)" 
+            name="Type" class="select-input input-field requerd-fuild-input " type="text">
+                <option *ngFor="let type of sensorTypes" value={{type.id}}>{{type.value}}</option>
+            </select>
+        </div>
+        <div class="input-line-holder">
+            <label for="Unit" class="input-lable regular-text requerd-fuild-lable">
+                <div>
+                    <p>*</p>
+                </div>
+                <p>Unit</p>
+            </label>
+            <select 
+            [selectedIndex]="selectedSensorMUId" 
+            (change) = "onMUChange($event)" 
+            name="Unit" class="select-input input-field requerd-fuild-input" type="text">
+                <option *ngFor="let unit of measuringUnits" value={{unit.id}}>{{unit.value}}</option>
+            </select>
+        </div>
+        <div class="input-line-holder">
+            <label for="Location" class="input-lable regular-text requerd-fuild-lable">
+                <div>
+                    <p>*</p>
+                </div>
+                <p>Location</p>
+            </label>
+            <input formControlName="location" required name="Location" class="input-field requerd-fuild-input " type="text" placeholder="Location">
+        </div>
+        <div>
+            <label for="Description" class="input-lable regular-text requerd-fuild-lable">
+                <div>
+                    <p>*</p>
+                </div>
+                <p>Description</p>
+            </label>
+            <textarea formControlName="description" required name="Description" class="input-field requerd-fuild-input text-area" placeholder="Here is a some text input.&#10;&#10;Here is another paragraph of input."></textarea>
+        </div>
+        <div class="button-holder">
+            <button (click)="onSave()" class ="default-btn regular-text">Save</button>
+            <button (click)="onCancele()" class ="default-btn regular-text">Cancel</button>
+        </div>    
+    </form>
+    <div *ngIf="errorPresent" class="error-msg regular-text">
+        <p>{{errorMsg}}</p> 
+    </div>
+</article>

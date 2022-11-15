@@ -1,0 +1,92 @@
+$hintBacgroundColor : rgb(217,217,217);
+$hintPopUpTime : 0.5s;
+$hintPopUpTextColor : rgb(65,65,65);
+$hintPopUpTextFont : Calibri;
+
+$columnWidth : 210px;
+$columnHieght : 40px;
+
+.sensor{
+    display: flex;
+    flex-direction: row;
+    div {
+        height: $columnHieght;
+        width: $columnWidth;
+        background-color: $hintBacgroundColor;
+        border: 1px solid;
+        
+        h1{
+            text-align: center;
+            margin: 0;
+            margin-top: 8px;
+            font-size: 20px;
+        }
+
+        a{
+            color: blue;
+            text-decoration: none;
+        }
+    }
+}
+
+[popup-hint] {
+    position: relative;
+}
+
+[popup-hint]::after {
+    content: attr(popup-hint);
+    position: absolute;
+
+    width: $columnWidth * 3;
+    left: 6px; 
+    top: 0;
+    pointer-events: none;
+
+    transition: $hintPopUpTime;
+    background: $hintBacgroundColor;
+    color: $hintPopUpTextColor;
+    font-family: $hintPopUpTextFont;
+
+    z-index: 2;
+    opacity: 0;
+} 
+
+[popup-hint]:hover::after {
+    opacity: 1;
+    top: 30px;
+}
+
+.bnt-size{
+    width: $columnHieght * 0.8;
+    height: $columnHieght * 0.8;
+    margin-top: $columnHieght * 0.12;
+}
+
+.delete-btn{
+    @extend .bnt-size;
+    margin-left: 10px;
+
+    background-image: url("../../../../../assets/cross.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.edit-btn{
+    @extend .bnt-size;
+    margin-right: 10px;
+    
+    background-image: url("../../../../../assets/pencil.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 18px 18px;
+
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+
+

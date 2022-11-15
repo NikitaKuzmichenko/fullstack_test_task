@@ -88,7 +88,7 @@ $selectorTextFont : Calibri;
         button{
             height: 16px;
             width: 24px; 
-            background-image: url("../../../../../assets/arrow_down.png");
+            background-image: url("../../../../assets/arrow_down.png");
             background-position: center;
             background-repeat: no-repeat;
             background-size: 8px 8px;
@@ -123,7 +123,7 @@ $selectorTextFont : Calibri;
     text-indent: 6px;
     padding-right: 29px;
     appearance: none;
-    background-image: url("../../../../../assets/arrow_up_down.png");
+    background-image: url("../../../../assets/arrow_up_down.png");
     background-size: 30px 30px;
     background-repeat: no-repeat;
     background-position: right;
@@ -141,4 +141,11 @@ $selectorTextFont : Calibri;
 .select-input::placeholder{
     margin-left: 50px;
     font-family: $selectorTextFont;
+}
+
+.error-msg{
+    margin-left: 100px;
+    margin-top: 20px;
+    text-align: center;
+    color: red;
 }
